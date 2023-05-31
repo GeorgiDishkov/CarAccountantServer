@@ -80,6 +80,7 @@ exports.login = async (email, password) => {
         email: employer?.email,
         phoneNumber: employer?.phoneNumber,
         username: employer?.username,
+        companyId: employer?.companyID,
         cashBoxID: company?.cashBox,
         role: employer?.role,
         token: token
@@ -135,7 +136,6 @@ exports.renewedToken = async (data) => {
     try {
         if (!employer) {
             const company = await getCompany(data._id);
-            console.log("company", company);
             const payload = {
                 _id: company?._id.toString(),
                 email: company?.email,
@@ -143,7 +143,7 @@ exports.renewedToken = async (data) => {
             };
             const reNewedToken = await jwt.sing(payload, SECRET);
             const returnedData = {
-                _Id: company?._id.toString(),
+                _id: company?._id.toString(),
                 email: company?.email,
                 phoneNumber: company?.phoneNumber,
                 username: company?.username,
@@ -155,7 +155,6 @@ exports.renewedToken = async (data) => {
             return returnedData;
         }
         const company = await getCompany(employer?.companyID?.toString())
-        console.log(company);
         const payload = {
             _id: employer?._id.toString(),
             email: employer?.email,
@@ -163,10 +162,11 @@ exports.renewedToken = async (data) => {
         };
         const reNewedToken = await jwt.sing(payload, SECRET);
         const returnedData = {
-            _Id: employer?._id.toString(),
+            _id: employer?._id.toString(),
             email: employer?.email,
             phoneNumber: employer?.phoneNumber,
             username: employer?.username,
+            companyId: employer?.companyID.toString(),
             cashBoxID: company?.cashBox,
             role: employer?.role,
             token: reNewedToken
