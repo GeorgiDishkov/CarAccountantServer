@@ -18,12 +18,35 @@ const repairSchema = new mongoose.Schema({
             clientPrice: { type: Number, required: true },
         },
     ],
-    priceForLabor: { type: Number, default: 0 },
-    note: { type: String, required: false, maxlength: 200 },
-    endDate: { type: Date, default: Date.now }, // can be repaired, but we need to send it from FE
-    createDate: { type: Date, default: Date.now },
-    finished: { type: Boolean, default: false },
-    paied: { type: Boolean, default: false },
+    priceForLabor: {
+        type: Number,
+        default: 0
+    },
+    note: {
+        type: String,
+        required: false,
+        maxlength: 200
+    },
+    endDate: {
+        type: Date,
+        default: Date.now
+    }, // can be repaired, but we need to send it from FE
+    createDate: {
+        type: Date,
+        default: Date.now
+    },
+    finished: {
+        type: Boolean,
+        default: false
+    },
+    paied: {
+        type: Boolean,
+        default: false
+    },
+    workers: [{
+        type: mongoose.Schema.Types.ObjectId, ref: 'employers',
+        required: true,
+    }],
 });
 
 const Repair = mongoose.model('Repair', repairSchema);

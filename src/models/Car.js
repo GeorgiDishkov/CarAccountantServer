@@ -24,6 +24,14 @@ const carSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    workers: [{
+        type: mongoose.Schema.Types.ObjectId, ref: 'employers',
+        required: true,
+    }],
+    commanyHoldRepairs: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'company',
+        required: true,
+    },
     buildDate: {
         type: Date,
         require: true,
