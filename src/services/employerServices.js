@@ -22,7 +22,6 @@ exports.getCurrentEmployer = async (id) => {
 
 
 exports.updateEmployer = async (employerID, data) => {
-    console.log(employerID);
     const employer = await Employers.findByIdAndUpdate(employerID, data)
 
     if (!employer) {
@@ -30,5 +29,7 @@ exports.updateEmployer = async (employerID, data) => {
     }
     return employer
 }
+
+exports.getAllEmployersFrom = async (id) => await Employers.find({ companyID: id });
 
 exports.deleteEmployer = async (id) => Employers.findByIdAndDelete(id);

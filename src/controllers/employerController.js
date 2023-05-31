@@ -1,12 +1,25 @@
 const router = require('express').Router();
 const mapErrors = require('../utils/errorMapper');
-const { getAllEmployers, deleteEmployer, getCurrentEmployer, updateEmployer, getEmployerById } = require('../services/employerServices');
+const { getAllEmployers, deleteEmployer, getCurrentEmployer, updateEmployer, getEmployerById, getAllEmployersFrom } = require('../services/employerServices');
 const bcrypt = require('bcrypt');
 
 router.get('/', async (req, res) => {
     try {
         const data = await getAllEmployers();
         res.status(200).json(data)
+    } catch (err) {
+        console.error(err.message);
+        const error = mapErrors(err);
+        res.status(400).json({ message: error })
+    }
+})
+
+router.get("/cmp/:companyId", async (req, res) => {
+    const id = req.params.companyId;
+    try {
+        const data = await getAllEmployersFrom(id);
+        console.log("data from DB =>", data);
+        res.status(200).json(data);
     } catch (err) {
         console.error(err.message);
         const error = mapErrors(err);
