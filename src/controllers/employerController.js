@@ -4,8 +4,9 @@ const { getAllEmployers, deleteEmployer, getCurrentEmployer, updateEmployer, get
 const bcrypt = require('bcrypt');
 
 router.get('/', async (req, res) => {
+    const companyId = req?.headers["x-company-id"]
     try {
-        const data = await getAllEmployers();
+        const data = await getAllEmployersFrom(companyId);
         res.status(200).json(data)
     } catch (err) {
         console.error(err.message);

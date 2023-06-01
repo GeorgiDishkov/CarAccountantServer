@@ -7,7 +7,7 @@ router.post("/:carID", async (req, res) => {
     const carID = req.params.carID;
     const service = req.body.service;
     const parts = req.body.parts
-    const { priceForLabor, note, createDate, endDate, finished, paied } = req.body;
+    const { priceForLabor, note, createDate, endDate, finished, paied, comanyHoldRepairs, worker } = req.body;
 
     const repairData = {
         service: [...service],
@@ -17,7 +17,9 @@ router.post("/:carID", async (req, res) => {
         createDate,
         endDate,
         finished,
-        paied
+        paied,
+        comanyHoldRepairs,
+        worker,
     }
     try {
         const car = await createRepair(carID, repairData);

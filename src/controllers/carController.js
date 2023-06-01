@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const mapErrors = require('../utils/errorMapper');
 const { isGuest, isAuth } = require('../middleware/guard');
-const { addCar, getCarByID, getAllCars, getCarByInfo, updateCar, deleteCar } = require('../services/carServices');
+const { addCar, getCarByID, getAllCars, getCarByInfo, updateCar, deleteCar, getCarsByCompanyId } = require('../services/carServices');
 
 router.post("/", async (req, res) => {
-    const { buildDate, owner, carNumber, phoneNumber, carModel, carMark } = req.body;
+    const { buildDate, owner, carNumber, phoneNumber, carModel, carMark, comanyHoldRepairs } = req.body;
     try {
-        const data = await addCar(buildDate, owner, carNumber, phoneNumber, carModel, carMark);
+        const data = await addCar(buildDate, owner, carNumber, phoneNumber, carModel, carMark, comanyHoldRepairs);
         res.status(200).json(data)
     } catch (err) {
         console.error(err.message);
@@ -44,8 +44,9 @@ router.get("/:carID", async (req, res) => {
 
 
 router.get("/", async (req, res) => {
+    const companyId = req?.headers["x-company-id"]
     try {
-        const data = await getAllCars();
+        const data = await getCarsByCompanyId(companyId);
         res.status(200).json(data);
     } catch (err) {
         console.error(err.message);

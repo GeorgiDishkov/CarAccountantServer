@@ -43,10 +43,14 @@ const repairSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    workers: [{
+    comanyHoldRepairs: {
+        type: mongoose.Schema.Types.ObjectId, ref: "company",
+        required: true,
+    },
+    worker: {
         type: mongoose.Schema.Types.ObjectId, ref: 'employers',
         required: true,
-    }],
+    },
 });
 
 const Repair = mongoose.model('Repair', repairSchema);
