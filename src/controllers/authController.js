@@ -6,7 +6,6 @@ const { isGuest, isAuth } = require('../middleware/guard');
 
 router.post('/register', isGuest(), async (req, res) => {
     const { email, username, password, rePassword, phoneNumber, role, companyID } = req.body;
-    console.log(req.body);
     try {
         if (email == '' || username == '' || password == '' || phoneNumber == '') {
             throw new Error('all the fields are required');

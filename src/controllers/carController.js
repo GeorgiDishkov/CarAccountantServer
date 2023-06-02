@@ -32,8 +32,9 @@ router.get('/:mark/:model', async (req, res) => {
 
 router.get("/:carID", async (req, res) => {
     const carID = req.params.carID;
+    const companyId = req?.headers["x-company-id"]
     try {
-        const car = await getCarByID(carID);
+        const car = await getCarByID(carID, companyId);
         res.status(200).json(car);
     } catch (err) {
         console.error(err.message);

@@ -13,7 +13,7 @@ exports.createRepair = async (carID, data) => {
     return await updateCar(carID, car);
 }
 
-exports.getAllRepairs = async () => await Repair.find()
+exports.getAllRepairs = async (id) => await Repair.find({ comanyHoldRepairs: id })
 
 exports.getRepairById = async (id) => await Repair.findById(id);
 

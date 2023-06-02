@@ -19,7 +19,6 @@ router.get("/cmp/:companyId", async (req, res) => {
     const id = req.params.companyId;
     try {
         const data = await getAllEmployersFrom(id);
-        console.log("data from DB =>", data);
         res.status(200).json(data);
     } catch (err) {
         console.error(err.message);

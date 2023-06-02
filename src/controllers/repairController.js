@@ -33,8 +33,9 @@ router.post("/:carID", async (req, res) => {
     }
 })
 router.get('/', async (req, res) => {
+    const companyId = req?.headers["x-company-id"]
     try {
-        const data = await getAllRepairs();
+        const data = await getAllRepairs(companyId);
         res.status(200).json(data)
     } catch (err) {
         console.error(err.message);

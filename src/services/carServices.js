@@ -1,7 +1,8 @@
 const Car = require("../models/Car")
 
 exports.addCar = async (buildDate, owner, carNumber, phoneNumber, carModel, carMark, comanyHoldRepairs) => {
-    const exist = await Car.findOne({ carNumber })
+    const exist = await Car.findOne({ carNumber, comanyHoldRepairs })
+
     if (exist) {
         throw new Error("Car is allready registred")
     }
@@ -9,10 +10,9 @@ exports.addCar = async (buildDate, owner, carNumber, phoneNumber, carModel, carM
     return car
 }
 
-exports.getCarByID = async (id) => {
-    let car = await Car.find({ carNumber: id }).populate("repairs");
-
-    if (car.length === 0) {
+exports.getCarByID = async (id, companyId) => {
+    let car = await Car.findOne({ carNumber: id, comanyHoldRepairs: companyId }).populate("repairs");
+    if (!car) {
         car = await Car.findById(id).populate("repairs");
     }
     return car;
@@ -39,4 +39,4 @@ exports.updateCar = async (carID, data) => await Car.findByIdAndUpdate(carID, da
 
 exports.deleteCar = async (id) => Car.findByIdAndDelete(id)
 
-exports.getCarsByCompanyId = async (id) => await Car.find({ comanyHoldRepairs: id })
+exports.getCarsByCompanyId = async (id) => await Car.find({ comanyHoldRepairs: id }).populate("repairs")
