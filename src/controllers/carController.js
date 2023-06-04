@@ -4,9 +4,9 @@ const { isGuest, isAuth } = require('../middleware/guard');
 const { addCar, getCarByID, getAllCars, getCarByInfo, updateCar, deleteCar, getCarsByCompanyId } = require('../services/carServices');
 
 router.post("/", async (req, res) => {
-    const { buildDate, owner, carNumber, phoneNumber, carModel, carMark, comanyHoldRepairs } = req.body;
+    const { buildDate, owner, carNumber, phoneNumber, carModel, carMark,carVIN, comanyHoldRepairs } = req.body;
     try {
-        const data = await addCar(buildDate, owner, carNumber, phoneNumber, carModel, carMark, comanyHoldRepairs);
+        const data = await addCar(buildDate, owner, carNumber, phoneNumber, carModel, carMark,carVIN, comanyHoldRepairs);
         res.status(200).json(data)
     } catch (err) {
         console.error(err.message);
@@ -60,7 +60,7 @@ router.get("/", async (req, res) => {
 router.post('/update/:carID', async (req, res) => {
     try {
         const { carID } = req.params;
-        const { buildDate, owner, carNumber, phoneNumber, carModel, carMark } = req.body;
+        const { buildDate, owner, carNumber, phoneNumber, carModel, carMark ,carVIN} = req.body;
         let [day, month, year] = buildDate.split('/');
         let formatedBuildDate = new Date(year, month - 1, day)
         const updatedCar = await updateCar(carID, {
@@ -70,6 +70,7 @@ router.post('/update/:carID', async (req, res) => {
             phoneNumber,
             carModel,
             carMark,
+            carVIN,
         });
         res.status(200).json(updatedCar);
     } catch (err) {

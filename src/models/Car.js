@@ -19,6 +19,10 @@ const carSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    carVIN: {
+        type: String,
+        required: true,
+    },
     carMark: {
         type: String,
         required: true,

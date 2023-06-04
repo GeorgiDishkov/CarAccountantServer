@@ -1,12 +1,12 @@
 const Car = require("../models/Car")
 
-exports.addCar = async (buildDate, owner, carNumber, phoneNumber, carModel, carMark, comanyHoldRepairs) => {
+exports.addCar = async (buildDate, owner, carNumber, phoneNumber, carModel, carMark,carVIN, comanyHoldRepairs) => {
     const exist = await Car.findOne({ carNumber, comanyHoldRepairs })
 
     if (exist) {
         throw new Error("Car is allready registred")
     }
-    const car = Car.create({ buildDate, owner, carNumber, phoneNumber, carModel, carMark, comanyHoldRepairs })
+    const car = Car.create({ buildDate, owner, carNumber, phoneNumber, carModel, carMark,carVIN, comanyHoldRepairs })
     return car
 }
 
