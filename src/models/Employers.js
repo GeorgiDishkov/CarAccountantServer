@@ -10,7 +10,6 @@ const employersSchema = new mongoose.Schema({
         type: String,
         minLenght: 10,
         required: [true, "email is required!"],
-        unique: true,
         match: [/^((?:[\w-]\.?)+)@((?:[\w-]+\.)+)([A-Za-z])/g, "Please fill a valid email adress"]
     },
     password: {

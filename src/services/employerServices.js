@@ -20,6 +20,14 @@ exports.getCurrentEmployer = async (id) => {
     return data;
 }
 
+exports.getEmployerByEmail = async (email) => {
+    const data = await Employers.find({ email: email });
+
+    if (!data) {
+        return null
+    }
+    return data;
+}
 
 exports.updateEmployer = async (employerID, data) => {
     const employer = await Employers.findByIdAndUpdate(employerID, data)

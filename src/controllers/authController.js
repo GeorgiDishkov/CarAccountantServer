@@ -2,6 +2,8 @@ const router = require('express').Router();
 const mapErrors = require('../utils/errorMapper');
 const { register, login, registerCompany, loginCompany, renewedToken } = require('../services/authServices');
 const { isGuest, isAuth } = require('../middleware/guard');
+const { getCompany } = require('../services/companyService');
+const { getEmployerByEmail } = require('../services/employerServices');
 
 
 router.post('/register', isGuest(), async (req, res) => {
@@ -10,7 +12,17 @@ router.post('/register', isGuest(), async (req, res) => {
         if (email == '' || username == '' || password == '' || phoneNumber == '') {
             throw new Error('all the fields are required');
         }
-
+        const company = await getCompany(companyID);
+        const isTaken = await getEmployerByEmail(email);
+        if (company.email === email) {
+            res.status(403).json({ message: "Не може да използвате мейла на компанията!" })
+            return
+        }
+        const isRegisteredInCompany = isTaken.some(obj => obj.companyID.equals(company._id));
+        if (isRegisteredInCompany) {
+            res.status(403).json({ message: "Вече има регистриран служител с този мейл в компанията!" })
+            return
+        }
         const token = await register(email, username, password, rePassword, phoneNumber, role, companyID);
         res.status(201).json(token)
 

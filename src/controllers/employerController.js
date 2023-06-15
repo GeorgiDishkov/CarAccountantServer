@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const mapErrors = require('../utils/errorMapper');
-const { getAllEmployers, deleteEmployer, getCurrentEmployer, updateEmployer, getEmployerById, getAllEmployersFrom } = require('../services/employerServices');
+const { getAllEmployers, deleteEmployer, getCurrentEmployer, updateEmployer, getEmployerById, getAllEmployersFrom, getEmployerByEmail } = require('../services/employerServices');
 const bcrypt = require('bcrypt');
+const { getCompany } = require('../services/companyService');
 
 router.get('/', async (req, res) => {
     const companyId = req?.headers["x-company-id"]
@@ -53,11 +54,22 @@ router.post('/:employerID', async (req, res) => {
     try {
         const { email, username, phoneNumber, oldPassword, password, role } = req.body;
         const employerID = req.params.employerID
+        const employer = await getCurrentEmployer(employerID)
+        const isTaken = await getEmployerByEmail(email);
+        const company = await getCompany(employer.companyID.toString());
+        if (company.email === email) {
+            res.status(400).json({ message: "Не може да използвате мейла на компанията!" })
+            return
+        }
+        const isRegisteredInCompany = isTaken.some(obj => obj.companyID.equals(company._id));
+        if (isRegisteredInCompany) {
+            res.status(400).json({ message: "Вече има регистриран служител с този мейл в компанията!" })
+            return
+        }
         if (password !== "" && oldPassword !== "" && password !== undefined && oldPassword !== undefined) {
             const data = {
                 email, username, phoneNumber, password, role
             }
-            const employer = await getCurrentEmployer(employerID)
             const isValid = await bcrypt.compare(oldPassword, employer.password);
             if (!isValid) {
                 throw new Error('Invalid password')
