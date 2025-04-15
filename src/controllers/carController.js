@@ -61,10 +61,8 @@ router.post('/update/:carID', async (req, res) => {
     try {
         const { carID } = req.params;
         const { buildDate, owner, carNumber, phoneNumber, carModel, carMark ,carVIN} = req.body;
-        let [day, month, year] = buildDate.split('/');
-        let formatedBuildDate = new Date(year, month - 1, day)
         const updatedCar = await updateCar(carID, {
-            buildDate: formatedBuildDate,
+            buildDate,
             owner,
             carNumber,
             phoneNumber,
