@@ -5,7 +5,7 @@ const dbConfig = require('./src/config/db');
 const auth = require('./src/middleware/authMiddleware');
 const router = require('./src/routes/routes');
 
-const PORT = 3005;
+const PORT = process.env.PORT || 3005;
 
 start()
 
@@ -27,6 +27,6 @@ async function start() {
 
     app.get(`/`, (req, res) => res.json({ messsage: 'REST Services operational' }))
 
-    app.listen(PORT, () => console.log(`Server work right on port ${PORT}`));
+    app.listen(PORT, '0.0.0.0', () => console.log(`Server work right on port ${PORT}`));
 
 }
